@@ -1,17 +1,17 @@
-import logo from './logo.png';
-import './App.css';
+import React from 'react'
+import { BrowserRouter } from "react-router-dom";
+import Router from "./Router"
+
+import './css/App.css';
 
 function App() {
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Hello world
-				</p>
-			</header>
-		</div>
+		<>
+			<BrowserRouter>
+          		<Router />
+        	</BrowserRouter>
+		</>
 	);
 }
 
-export default App;
+export default App
