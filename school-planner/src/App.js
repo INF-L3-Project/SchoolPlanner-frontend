@@ -1,17 +1,19 @@
-import React from 'react'
-import { BrowserRouter } from "react-router-dom";
-import Router from "./Router"
+// routes
+import Router from './routes';
+// theme
+import ThemeProvider from './theme';
+// components
+import ScrollToTop from './components/ScrollToTop';
+import { BaseOptionChartStyle } from './components/chart/BaseOptionChart';
 
-import './css/App.css';
+// ----------------------------------------------------------------------
 
-function App() {
-	return (
-		<>
-			<BrowserRouter>
-          		<Router />
-        	</BrowserRouter>
-		</>
-	);
+export default function App() {
+  return (
+    <ThemeProvider>
+      <ScrollToTop />
+      <BaseOptionChartStyle />
+      <Router />
+    </ThemeProvider>
+  );
 }
-
-export default App
