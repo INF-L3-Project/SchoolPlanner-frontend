@@ -15,6 +15,7 @@ import NotFound from './pages/Page404';
 import Register from './pages/Register';
 import Branchs from './pages/Branchs';
 import DashboardApp from './pages/DashboardApp';
+import NewPassword from './pages/NewPassword';
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,8 @@ export default function Router() {
 				{ path: 'register', element: <Register /> },
 				{ path: '404', element: <NotFound /> },
 				{ path: '*', element: <Navigate to="/404" /> },
+
+				{ path: 'password/new', element: <NewPassword /> },
 			],
 		},
 		{ path: '*', element: <Navigate to="/404" replace /> },
