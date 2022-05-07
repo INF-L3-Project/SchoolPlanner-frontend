@@ -4,13 +4,13 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, Stack, Link, Container, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
+import { Card, Stack, Link, Container, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import Iconify from '../components/Iconify';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
 import Page from '../components/Page';
+import logo from '../media/logo.png';
 // sections
 import AuthSocial from '../sections/auth/AuthSocial';
 
@@ -61,7 +61,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function NewPassword() {
+export default function ResetPassword() {
 
 	const navigate = useNavigate();
 
@@ -69,35 +69,54 @@ export default function NewPassword() {
 
 	const LoginSchema = Yup.object().shape({
 		email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-		password: Yup.string().required('Password is required'),
 	});
 
 	const formik = useFormik({
-		initialValues: {
-			email: '',
-			password: '',
-			remember: true,
-		},
-		validationSchema: LoginSchema,
-		onSubmit: () => {
-		  	navigate('/dashboard', { replace: true });
-		},
+	initialValues: {
+		email: '',
+		remember: true,
+	},
+	validationSchema: LoginSchema,
+	onSubmit: () => {
+	  navigate('/dashboard', { replace: true });
+	},
 	});
 
 	const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
-	const handleShowPassword = () => {
-		setShowPassword((show) => !show);
-	};
+
+	const smUp = useResponsive('up', 'sm');
+
+	const mdUp = useResponsive('up', 'md');
 
 	return (
-		<Page title="New Password">
+		<Page title="Reset Password">
 			<RootStyle>
+				<HeaderStyle>
+
+					{smUp && (
+						<Typography variant="body2" sx={{ mt: { md: -2 } }}>
+							Vous souvenez vous de votre mot de passe? {''}
+							<Link variant="subtitle2" component={RouterLink} to="/register">
+								Se connecter
+							</Link>
+						</Typography>
+					)}
+				</HeaderStyle>
+
+				{mdUp && (
+					<SectionStyle>
+						<Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+							Réinitialisez votre mot de passe
+						</Typography>
+						<img src="/static/illustrations/illustration_login.png" alt="login" />
+					</SectionStyle>
+				)}
 
 				<Container maxWidth="sm">
 					<ContentStyle>
 						<Typography variant="h4" gutterBottom>
-							Réinitialisez votre mot de passe
+							Entrez votre adresse mail
 						</Typography>
 
 						<Stack spacing={3} sx={{ my: 5 }}>
@@ -110,30 +129,20 @@ export default function NewPassword() {
 					            error={Boolean(touched.email && errors.email)}
 					            helperText={touched.email && errors.email}
 					        />
-
-					        <TextField
-					            fullWidth
-					            autoComplete="current-password"
-					            type={showPassword ? 'text' : 'password'}
-					            label="Password"
-					            {...getFieldProps('password')}
-					            InputProps={{
-					              endAdornment: (
-					                <InputAdornment position="end">
-					                  <IconButton onClick={handleShowPassword} edge="end">
-					                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-					                  </IconButton>
-					                </InputAdornment>
-					              ),
-					            }}
-					            error={Boolean(touched.password && errors.password)}
-					            helperText={touched.password && errors.password}
-					        />
 					    </Stack>
 
 					    <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-				          	Réinitialiser
+				          	Envoyer
 				        </LoadingButton>
+
+						{!smUp && (
+							<Typography variant="body2" align="center" sx={{ mt: 3 }}>
+								Don’t have an account?{' '}
+								<Link variant="subtitle2" component={RouterLink} to="/register">
+									Get started
+								</Link>
+							</Typography>
+						)}
 
 					</ContentStyle>
 				</Container>

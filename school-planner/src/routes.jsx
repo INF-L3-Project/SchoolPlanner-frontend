@@ -16,6 +16,7 @@ import Register from './pages/Register';
 import Branchs from './pages/Branchs';
 import DashboardApp from './pages/DashboardApp';
 import NewPassword from './pages/NewPassword';
+import ResetPassword from './pages/ResetPassword';
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +47,7 @@ export default function Router() {
 				{ path: '404', element: <NotFound /> },
 				{ path: '*', element: <Navigate to="/404" /> },
 
+				{ path: 'password/reset', element: <ResetPassword /> },
 				{ path: 'password/new', element: <NewPassword /> },
 			],
 		},
