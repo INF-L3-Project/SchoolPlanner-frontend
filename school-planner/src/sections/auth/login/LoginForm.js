@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
+import axios from 'axios';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 // material
@@ -10,27 +11,56 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
+axios.create({
+  baseUrl : `https://schoolplanner-api.herokuapp.com/api/`
+});
+
 export default function LoginForm() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    email: Yup.string().email('Votre adresse email n\'est pas valide').required('Entrez votre adresse email'),
+    password: Yup.string().required('Entrez votre mot de passe'),
   });
 
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
-      remember: true,
+      // remember: true,
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
       navigate('/dashboard', { replace: true });
     },
   });
+
+  function handleSubmitting(){
+
+    let postOptions = {
+      header : {
+        Accept : 'application/json',
+        'content-Type' : 'application/json'
+      }
+    }
+
+    axios.post(`https://schoolplanner-api.herokuapp.com/api/login/`, {
+
+        user : {
+          email : '',
+          password: ''
+        },
+
+    }, postOptions)
+    .then( res => {
+      console.log('this is the response' +res.data);
+    })
+
+  }
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
@@ -40,13 +70,14 @@ export default function LoginForm() {
 
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <Form autoComplete="off" noValidate onSubmit={handleSubmitting()}>
         <Stack spacing={3}>
           <TextField
             fullWidth
             autoComplete="username"
             type="email"
-            label="Email address"
+            label="Adresse Email"
+            onChange = {(e)=> setEmail(e.target.value)}
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
@@ -56,7 +87,8 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="Mot de passe"
+            onChange = {(e)=> setPassword(e.target.value)}
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -73,18 +105,18 @@ export default function LoginForm() {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
-          />
+          /> */}
 
           <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
-            Forgot password?
+            Mot de passe oublié?
           </Link>
         </Stack>
 
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Login
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting} onClick={()=>handleSubmitting()}>
+            Se connecter
         </LoadingButton>
       </Form>
     </FormikProvider>
