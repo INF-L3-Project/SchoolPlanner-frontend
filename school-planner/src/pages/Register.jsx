@@ -1,15 +1,20 @@
+import React, {useState} from 'react';
+import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, Link, Container, Typography } from '@mui/material';
+import { Card, Box, Link, Container, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
 import Page from '../components/Page';
-//import Logo from '../components/Logo';
 // sections
 import { RegisterForm } from '../sections/auth/register';
-import AuthSocial from '../sections/auth/AuthSocial';
+
+//images
+import logo from '../media/logo.png';
+
+import register from '../media/bg/register.jpg';
 
 // ----------------------------------------------------------------------
 
@@ -39,15 +44,14 @@ const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
   maxWidth: 464,
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2),
+  borderRadius: '0',
+  margin: theme.spacing(0, 0, 0, 0),
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
-  minHeight: '100vh',
+  minHeight: 'auto',
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
@@ -57,6 +61,18 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
+
+  axios.get(`https://schoolplanner-api.herokuapp.com/api/accounts`)
+      .then(res => {
+        const persons = res.data;
+        console.log(res.data)
+      
+      }).catch((error)=> {
+    console.log('erros is:' + error);
+      
+  }).then( function () {
+  });  
+
   const smUp = useResponsive('up', 'sm');
 
   const mdUp = useResponsive('up', 'md');
@@ -65,12 +81,14 @@ export default function Register() {
     <Page title="Register">
       <RootStyle>
         <HeaderStyle>
-          Logo
+          
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Already have an account? {''}
+              <Typography sx={{color: 'white'}}>
+                Vous disposez déja d'un compte? {''}
+              </Typography>
               <Link variant="subtitle2" component={RouterLink} to="/login">
-                Login
+                Connectez-vous
               </Link>
             </Typography>
           )}
@@ -78,42 +96,28 @@ export default function Register() {
 
         {mdUp && (
           <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Manage the job more effectively with Minimal
-            </Typography>
-            <img alt="register" src="/static/illustrations/illustration_register.png" />
+            <img alt="register" src={register} />
           </SectionStyle>
         )}
 
         <Container>
-          <ContentStyle>
+          <Box sx={{ mx: 1, my: 0, px: 1, mt: 2, width:'150px',bgcolor: 'none', borderRadius: '50%' }}>
+           <img src={logo} width="100px" height="100px" />
+           </Box>
+          <ContentStyle >
             <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+              Créez un compte 
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
-
-            <AuthSocial />
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Gérez votre activité</Typography>
 
             <RegisterForm />
 
-            <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
-              <Link underline="always" color="text.primary" href="#">
-                Terms of Service
-              </Link>
-              {''}and{''}
-              <Link underline="always" color="text.primary" href="#">
-                Privacy Policy
-              </Link>
-              .
-            </Typography>
-
             {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
+                Vous disposez déja d'un compte? {''}
                 <Link variant="subtitle2" to="/login" component={RouterLink}>
-                  Login
+                  Connectez-vous
                 </Link>
               </Typography>
             )}
@@ -123,3 +127,4 @@ export default function Register() {
     </Page>
   );
 }
+

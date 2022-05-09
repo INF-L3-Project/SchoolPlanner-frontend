@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 // material
-import { alpha, useTheme, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
 //
 import Iconify from './Iconify';
@@ -35,7 +35,6 @@ NavItem.propTypes = {
 };
 
 function NavItem({ item, active }) {
-	const theme = useTheme();
 
 	const isActiveRoot = active(item.path);
 
@@ -50,7 +49,7 @@ function NavItem({ item, active }) {
 	const activeRootStyle = {
 		color: 'pink',
 		fontWeight: 'fontWeightMedium',
-		bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+		borderLeft : 'pink'
 	};
 
 	const activeSubStyle = {
