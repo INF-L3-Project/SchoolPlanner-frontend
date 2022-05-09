@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
@@ -13,6 +13,9 @@ import Page from '../components/Page';
 import logo from '../media/logo.png';
 // sections
 import AuthSocial from '../sections/auth/AuthSocial';
+// axios
+import axios from 'axios';
+
 
 // ----------------------------------------------------------------------
 
@@ -59,9 +62,17 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 	
 
-// ----------------------------------------------------------------------
+// ----------------------------------------
+
+
+
+const baseURL = "https://jsonplaceholder.typicode.com/posts/1";
+
+
 
 export default function ResetPassword() {
+
+	const [email, setEmail] = useState('');
 
 	const navigate = useNavigate();
 
@@ -88,6 +99,30 @@ export default function ResetPassword() {
 	const smUp = useResponsive('up', 'sm');
 
 	const mdUp = useResponsive('up', 'md');
+
+// -------------------  axios requests  ---------------------
+
+
+    function onSendEmail(e) {
+
+        e.preventDefault();
+        const postData = {
+            email,
+        };
+
+		axios({
+			method: "post",
+			url: `https://schoolplanner-api.herokuapp.com/api/authentication/request-reset-email/`,
+			data: postData,
+			headers: { "Content-Type": "application/json" },
+		})
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (response) {
+				console.log("errrrrrrrrrrr");
+			});
+    }
 
 	return (
 		<Page title="Reset Password">
@@ -118,22 +153,26 @@ export default function ResetPassword() {
 						<Typography variant="h4" gutterBottom>
 							Entrez votre adresse mail
 						</Typography>
+						<form onSubmit={onSendEmail}>
+							<Stack spacing={3} sx={{ my: 5 }}>
+								<TextField
+						            fullWidth
+						            type="email"
+						            value={email}
+						            onChange={(e) => setEmail(e.target.value)}
+						            label="Email address"
+						            {...getFieldProps('email')}
+						            error={Boolean(touched.email && errors.email)}
+						            helperText={touched.email && errors.email}
+						        />
+						    </Stack>
 
-						<Stack spacing={3} sx={{ my: 5 }}>
-							<TextField
-					            fullWidth
-					            autoComplete="username"
-					            type="email"
-					            label="Email address"
-					            {...getFieldProps('email')}
-					            error={Boolean(touched.email && errors.email)}
-					            helperText={touched.email && errors.email}
-					        />
-					    </Stack>
+						    <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+					          	Envoyer
+					        </LoadingButton>
 
-					    <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-				          	Envoyer
-				        </LoadingButton>
+						</form>
+				        
 
 						{!smUp && (
 							<Typography variant="body2" align="center" sx={{ mt: 3 }}>
