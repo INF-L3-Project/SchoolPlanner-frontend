@@ -1,5 +1,3 @@
-import React, {useState} from 'react';
-import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -61,17 +59,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
-
-  axios.get(`https://schoolplanner-api.herokuapp.com/api/accounts`)
-      .then(res => {
-        const persons = res.data;
-        console.log(res.data)
-      
-      }).catch((error)=> {
-    console.log('erros is:' + error);
-      
-  }).then( function () {
-  });  
 
   const smUp = useResponsive('up', 'sm');
 
