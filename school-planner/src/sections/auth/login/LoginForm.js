@@ -12,7 +12,7 @@ import Iconify from '../../../components/Iconify';
 // ----------------------------------------------------------------------
 
 axios.create({
-  baseUrl : `https://schoolplanner-api.herokuapp.com/api/`
+  baseUrl : `https://schoolplanner-api.herokuapp.com/api`
 });
 
 export default function LoginForm() {
@@ -48,7 +48,7 @@ export default function LoginForm() {
       }
     }
 
-    axios.post(`https://schoolplanner-api.herokuapp.com/api/login/`, {
+    axios.post(`https://schoolplanner-api.herokuapp.com/api/login`, {
 
         user : {
           email : '',
